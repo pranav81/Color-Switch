@@ -1,5 +1,5 @@
 var canvas = document.querySelector('.canvas1');
-var a=1, t=0;
+var a=1, t=0, score = 0;
 
     
 var ctx = canvas.getContext('2d');
@@ -12,7 +12,7 @@ let flag = false;
 
 var ball = {
     x : canvas.width / 2,
-    y : 250,
+    y : 350,
     rad : 10,
     vel : -7,
     clr : colors[Math.floor(Math.random() * 2)]
@@ -43,7 +43,7 @@ function drawObstacle(ox, oy, angle=0){
     
     ctx.beginPath();
     ctx.strokeStyle = obstacle.clr1;
-    ctx.lineWidth = 15;
+    ctx.lineWidth = 16;
     ctx.arc(ox, oy, obstacle.rad, angle, angle + Math.PI);
     ctx.stroke();
 
@@ -74,7 +74,7 @@ function obstacleUpdate(){
 
     a += 2;  
     obstacle.y+=1.5;  
-    if(obstacle.y>=600){
+    if(obstacle.y>=575){
         obstacle.y-=350;
     }
 
@@ -86,13 +86,50 @@ function ballJump(){
     
 }
 
+function colorCheck(){
+
+    if (((ball.y - obstacle.y)<90) && (ball.y - obstacle.y)>60){
+        if (a%360>90 && a%360<270){
+            if (ball.clr == 'black'){
+                flag = true;
+            }
+        }
+        else{
+            if(ball.clr == 'white'){
+                flag = true;
+            }
+        }
+        
+    }
+
+    if ((ball.y - obstacle.y)>(-90) && (ball.y - obstacle.y)<(-60)){
+        if (a%360>90 && a%360<270){
+            if (ball.clr == 'white'){
+                flag = true;
+            }
+        }
+        else{
+            if(ball.clr == 'black'){
+                flag = true;
+            }
+        }
+    }
+
+    
+}
+
 function update(){
 
-    window.requestAnimationFrame(update);
+    if (flag==false){
+        window.requestAnimationFrame(update);
+    }
 
     ballUpdate();
     obstacleUpdate();
     draw();
+    colorCheck();
+
+    //console.log(obstacle.y);
 
     canvas.addEventListener('click', ballJump);
 
