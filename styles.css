@@ -1,9 +1,17 @@
 body{
     background: #007eaf;
-    
+    text-align: center;
 }
 div{
     text-align: center;
+}
+
+.startbtn{
+    background-color: skyblue;
+    padding: 5px;
+    font-size: 20px;
+    color: #007eaf;
+    border-radius: 5px;;
 }
 canvas{
     
