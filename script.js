@@ -2,14 +2,22 @@ var canvas = document.querySelector('.canvas1');
 var start = document.querySelector('.startbtn');
 var scores=[];
 var best = 0;
+var game = new Audio('game.mp3');
+var gameover = new Audio('gameover.mp3');
+var beep = new Audio('beep.mp3');
 //window.localStorage.setItem('best', best);
 var ctx = canvas.getContext('2d');
-canvas.width = 300;
+canvas.width = 250;
 canvas.height = 500;
 
 
 start.addEventListener('click', function(){
-    setTimeout(init, 1000);
+    
+    setTimeout(function(){
+        init();
+        game.play();
+        game.loop = 'true';
+    }, 1000);
     
 });
 
@@ -19,7 +27,7 @@ function init(){
     let gravity = 0.5;
     let colors = ['red', 'green'];
     let flag = false;
-
+    
 
     var ball = {
         x : canvas.width / 2,
@@ -141,6 +149,8 @@ function init(){
     function ballJump(){
 
         ball.vel = -7;
+        beep.volume = 0.05;
+        beep.play();
         
     }
 
@@ -247,6 +257,9 @@ function init(){
             ctx.font = '30px sans-serif';
             
             ctx.fillText('GAME OVER!', canvas.width/2, canvas.height/2);
+            game.pause();
+            game.currentTime = 0;
+            gameover.play();
         }
     }
 
