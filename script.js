@@ -60,8 +60,9 @@ function init(){                                     //All gameplay code is insi
 
         ball.vel = -7;
         beep.volume = 0.05;
-        beep.play();
-        
+        if(flag == false){
+            beep.play();
+        }
     }
 
 
@@ -160,12 +161,12 @@ function init(){                                     //All gameplay code is insi
             flag=true;
         }
 
-        if (flag == true){                           //If game over, push the score to scores[]
-            
+        if ((flag == true) || (score>best)){         //If game over, push the score to scores[]
+           
             scores.push(score);                         
             best = Math.max(...scores);              //Update best if applicable
-            if(best>window.localStorage.getItem('best')){
-            window.localStorage.setItem('best', JSON.stringify(best));
+            if(best>window.localStorage.getItem('color-switch')){
+            window.localStorage.setItem('color-switch', JSON.stringify(best));
             }
 
         }
@@ -183,13 +184,13 @@ function init(){                                     //All gameplay code is insi
         ctx.strokeText(score,5,50);
 
         ctx.strokeText('BEST', 5, 75);
-        if (window.localStorage.getItem == null){
+        if (window.localStorage.getItem('color-switch') == null){
             ctx.strokeText('0', 5, 100);
         }
         else{
-            ctx.strokeText(window.localStorage.getItem('best'), 5, 100);
+            ctx.strokeText(window.localStorage.getItem('color-switch'), 5, 100);
         }
-
+        
         if(flag==true){
             
             ctx.fillStyle = '#00316e';            
@@ -225,7 +226,7 @@ function init(){                                     //All gameplay code is insi
             
             i++;                                     //Increasing i forgets the past obstacle   
             score+=10;
-            
+                        
         }
              
         draw();
