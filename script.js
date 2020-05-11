@@ -28,7 +28,8 @@ function init(){                                     //All gameplay code is insi
     var score = 0, i=0;                         //Game  variables
     let gravity = 0.5;
     let colors = ['red', 'green'];
-    let flag = false;                                //To check if game is in progress
+    let flag = false;           
+    var pausekey = false;                     //To check if game is in progress
 
     var ball = {                                     
         
@@ -56,12 +57,32 @@ function init(){                                     //All gameplay code is insi
         
     }
 
-    function ballJump(){                             //Create the jump effect on click
+    function ballJump(ev){                             //Create the jump effect on click
 
-        ball.vel = -7;
-        beep.volume = 0.05;
-        if(flag == false){
-            beep.play();
+        if((ev.offsetX>(canvas.width-18))&&(ev.offsetX<(canvas.width-5))){
+            if(ev.offsetY>=5 && ev.offsetY<=21){
+                if(pausekey===false){               //Checking if player clicked on pause button
+                    pausekey=true;
+                    game.pause();
+                    gameover.pause();
+                    
+                }
+                else {
+                    pausekey = false;
+                    
+                    game.play();
+                    gameover.pause();
+                    
+                    update();
+                }
+            }
+        }
+        else{
+            ball.vel = -7;
+            beep.volume = 0.05;
+            if(flag == false){
+                beep.play();
+            }
         }
     }
 
@@ -102,7 +123,7 @@ function init(){                                     //All gameplay code is insi
 
         obsUpdate(){                                 //Updates the position variable of an Obstacle 
             
-            this.a += 2;  
+            this.a += 1.5;  
             this.y+=1.5;
         
         }
@@ -173,6 +194,31 @@ function init(){                                     //All gameplay code is insi
 
     }
 
+    function drawPause(){                           //Draw the pause icon if game isn't paused
+
+        if(pausekey==false){
+
+            ctx.beginPath();
+            ctx.fillStyle = '#007eaf';
+            ctx.rect(canvas.width - 10, 8,5,16);
+            ctx.rect(canvas.width - 18, 8, 5, 16);
+            ctx.fill();
+            
+        }
+
+        if(pausekey==true){                         //Draw the play icon if game is paused
+
+            ctx.beginPath();
+            ctx.moveTo(canvas.width-18, 8);
+            ctx.lineTo(canvas.width - 18, 24);
+            ctx.lineTo(canvas.width - 5, 16);
+            ctx.closePath();
+            ctx.fillStyle = '#007eaf';
+            ctx.fill();
+
+        }
+
+    }
 
     function drawText(){                             //Drawing the score and best onto the canvas
         
@@ -200,14 +246,16 @@ function init(){                                     //All gameplay code is insi
             ctx.fillText('GAME OVER!', canvas.width/2, canvas.height/2);
             game.pause();
             game.currentTime = 0;
+            
             gameover.play();
-        
+            
         }
     }
 
     function update(){                               //Updates everything on the canvas
 
-        if (flag==false){
+        
+        if (flag==false && pausekey == false){
             window.requestAnimationFrame(update);    //If game is not over, call update
         }
 
@@ -228,13 +276,15 @@ function init(){                                     //All gameplay code is insi
             score+=10;
                         
         }
-             
+            
         draw();
         drawText();
         colorCheck();
+        drawPause();
+        console.log(flag);
 
-        canvas.addEventListener('click', ballJump);
+        canvas.addEventListener('mousedown', ballJump);
 
+        
     }
-
 }
