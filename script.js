@@ -27,7 +27,7 @@ function init(){                                     //All gameplay code is insi
     
     var score = 0, i=0;                         //Game  variables
     let gravity = 0.5;
-    let colors = ['red', 'green'];
+    let colors = ['red', 'green', 'blue'];
     let flag = false;           
     var pausekey = false;                     //To check if game is in progress
 
@@ -37,7 +37,7 @@ function init(){                                     //All gameplay code is insi
         y : 100,
         rad : 10,
         vel : -7,
-        clr : colors[Math.floor(Math.random() * 2)]
+        clr : colors[Math.floor(Math.random() * 3)]
     
     };
 
@@ -96,14 +96,24 @@ function init(){                                     //All gameplay code is insi
             this.y = y;
             this.rad = 60;
             
-            this.clr1 = colors[Math.floor(Math.random() * 2)];
+            this.clr1 = colors[Math.floor(Math.random() * 3)];
             if(this.clr1=='red'){
+                //this.clr2='green';
                 this.clr2='green';
+                this.clr3='blue';
             }
-            else{
-                this.clr2='red';
-            }
+            else if(this.clr1=='green'){
+                //this.clr2='red';
+                this.clr2='blue';
+                this.clr3='red';
 
+            }
+            else if(this.clr1=='blue'){
+                this.clr2='red';
+                this.clr3='green';
+            }
+            console.log(this.clr1);
+            console.log(this.clr2);
         }
 
         drawObs(angle = 0){                          //Draws an obstacle onto the screen
@@ -111,20 +121,29 @@ function init(){                                     //All gameplay code is insi
             ctx.beginPath();
             ctx.strokeStyle = this.clr1;
             ctx.lineWidth = 16;
-            ctx.arc(this.x, this.y, this.rad, angle, angle + Math.PI);
+            //ctx.arc(this.x, this.y, this.rad, angle, angle + Math.PI);
+            ctx.arc(this.x, this.y, this.rad, angle, angle+(2*Math.PI/3));
             ctx.stroke();
 
             ctx.beginPath();
             ctx.strokeStyle = this.clr2;
-            ctx.arc(this.x, this.y, this.rad, Math.PI+angle, (2*Math.PI) +angle);
+            // ctx.arc(this.x, this.y, this.rad, Math.PI+angle, (2*Math.PI) +angle);
+            ctx.arc(this.x, this.y, this.rad, angle+(2*Math.PI/3), (4*Math.PI/3) +angle);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.strokeStyle = this.clr3;
+            // ctx.arc(this.x, this.y, this.rad, Math.PI+angle, (2*Math.PI) +angle);
+            ctx.arc(this.x, this.y, this.rad, angle+(4*Math.PI/3), (2*Math.PI) +angle);
             ctx.stroke();
         
         }
 
         obsUpdate(){                                 //Updates the position variable of an Obstacle 
             
-            this.a += 1.5;  
-            this.y+=1.5;
+            this.a += 2;  
+            this.y+=1.25;
+            console.log(this.a);
         
         }
     }
@@ -151,27 +170,57 @@ function init(){                                     //All gameplay code is insi
             
         for(var j=0;j<o.length;j++){
             if (((ball.y - o[j].y)<75) && (ball.y - o[j].y)>50){
-                if (o[j].a%360>90 && o[j].a%360<270){
-                    if (ball.clr == o[j].clr1){
-                        flag = true;
-                    }
-                }                            
+                // if (o[j].a%360>90 && o[j].a%360<270){
+                //     if (ball.clr == o[j].clr1){
+                //         flag = true;
+                //     }
+                // }                            
                                                                 
-                else{
-                    if(ball.clr == o[j].clr2){
+                // else{
+                //     if(ball.clr == o[j].clr2){
+                //         flag = true;
+                //     }
+                // }                   //If there's a collision of differenr colors, game over
+                if(o[j].a%360>90 && o[j].a%360<210){
+                    if(ball.clr != o[j].clr3){
                         flag = true;
                     }
-                }                   //If there's a collision of differenr colors, game over
-            }                       //2 if statements to check for bottom and top part of obstacle
-                                            
-            if ((ball.y - o[j].y)>(-75) && (ball.y - o[j].y)<(-50)){
-                if (o[j].a%360>90 && o[j].a%360<270){
-                    if (ball.clr == o[j].clr2){
+                }
+                else if(o[j].a%360>210 && o[j].a%360<330){
+                    if(ball.clr != o[j].clr2){
                         flag = true;
                     }
                 }
                 else{
-                    if(ball.clr == o[j].clr1){
+                    if(ball.clr != o[j].clr1){
+                        flag = true;
+                    }
+                }
+            }                       //2 if statements to check for bottom and top part of obstacle
+                                            
+            if ((ball.y - o[j].y)>(-75) && (ball.y - o[j].y)<(-50)){
+                // if (o[j].a%360>90 && o[j].a%360<270){
+                //     if (ball.clr == o[j].clr2){
+                //         flag = true;
+                //     }
+                // }
+                // else{
+                //     if(ball.clr == o[j].clr1){
+                //         flag = true;
+                //     }
+                // }
+                if(o[j].a%360>30 && o[j].a%360<150){
+                    if(ball.clr != o[j].clr2){
+                        flag = true;
+                    }
+                }
+                else if(o[j].a%360>150 && o[j].a%360<270){
+                    if(ball.clr != o[j].clr1){
+                        flag = true;
+                    }
+                }
+                else{
+                    if(ball.clr != o[j].clr3){
                         flag = true;
                     }
                 }
