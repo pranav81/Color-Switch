@@ -1,8 +1,11 @@
 var canvas = document.querySelector('.canvas1');     //Selecting DOM elements   
-var start = document.querySelector('.startbtn');
+var easy = document.querySelector('.easy');
+var hard = document.querySelector('.hard');
 
 var scores=[];                                       //Global variables
 var best = 0;
+var difficulty = [true,false];
+var hard;
 
 var game = new Audio('game.mp3');                    //Declaring audio variables
 var gameover = new Audio('gameover.mp3');
@@ -13,9 +16,11 @@ canvas.width = 250;                                  //Setting canvas width and 
 canvas.height = 500;
 
 
-start.addEventListener('click', function(){          //Starting the game on clicking START button
+easy.addEventListener('click', function(){          //Starting the game on clicking START button
     
     setTimeout(function(){
+        
+        hard=false;
         init();                                      //Game starts 1sec after clicking on START
         game.play();
         game.loop = 'true';
@@ -23,11 +28,28 @@ start.addEventListener('click', function(){          //Starting the game on clic
     
 });
 
+hard.addEventListener('click', function(e){          //Starting the game on clicking START button
+    
+    setTimeout(function(){
+        hard=true;
+        init();                                      //Game starts 1sec after clicking on START
+        game.play();
+        game.loop = 'true';
+    }, 1000);
+    
+});
+
+
 function init(){                                     //All gameplay code is inside init()
     
     var score = 0, i=0;                         //Game  variables
     let gravity = 0.5;
-    let colors = ['red', 'green', 'blue'];
+    if(hard==true){
+        var colors = ['red', 'green', 'blue'];
+    }
+    else if(hard==false){
+        var colors = ['red', 'green'];
+    }
     let flag = false;           
     var pausekey = false;                     //To check if game is in progress
 
@@ -37,7 +59,8 @@ function init(){                                     //All gameplay code is insi
         y : 100,
         rad : 10,
         vel : -7,
-        clr : colors[Math.floor(Math.random() * 3)]
+        clr : colors[Math.floor(Math.random() * colors.length)]
+        
     
     };
 
@@ -78,7 +101,12 @@ function init(){                                     //All gameplay code is insi
             }
         }
         else{
-            ball.vel = -7;
+            if(hard==true){
+                ball.vel = -7.5;
+            }
+            else{
+                ball.vel = -7;
+            }
             beep.volume = 0.05;
             if(flag == false){
                 beep.play();
@@ -95,22 +123,35 @@ function init(){                                     //All gameplay code is insi
             this.x = x;                              //Initialising obstacle properties
             this.y = y;
             this.rad = 60;
+            if(hard == true){
+                this.clr1 = colors[Math.floor(Math.random() * 3)];
             
-            this.clr1 = colors[Math.floor(Math.random() * 3)];
-            if(this.clr1=='red'){
-                //this.clr2='green';
-                this.clr2='green';
-                this.clr3='blue';
-            }
-            else if(this.clr1=='green'){
-                //this.clr2='red';
-                this.clr2='blue';
-                this.clr3='red';
+                if(this.clr1=='red'){
+                    //this.clr2='green';
+                    this.clr2='green';
+                    this.clr3='blue';
+                }
+                else if(this.clr1=='green'){
+                    //this.clr2='red';
+                    this.clr2='blue';
+                    this.clr3='red';
 
+                }
+                else if(this.clr1=='blue'){
+                    this.clr2='red';
+                    this.clr3='green';
+                }
             }
-            else if(this.clr1=='blue'){
-                this.clr2='red';
-                this.clr3='green';
+
+            if(hard==false){
+
+                this.clr1 = colors[Math.floor(Math.random() * 2)];
+                if(this.clr1=='red'){
+                    this.clr2='green';
+                }
+                else{
+                    this.clr2='red';
+                }
             }
             console.log(this.clr1);
             console.log(this.clr2);
@@ -118,31 +159,58 @@ function init(){                                     //All gameplay code is insi
 
         drawObs(angle = 0){                          //Draws an obstacle onto the screen
             
-            ctx.beginPath();
-            ctx.strokeStyle = this.clr1;
-            ctx.lineWidth = 16;
-            //ctx.arc(this.x, this.y, this.rad, angle, angle + Math.PI);
-            ctx.arc(this.x, this.y, this.rad, angle, angle+(2*Math.PI/3));
-            ctx.stroke();
+            if(hard  == true){
+                ctx.beginPath();
+                ctx.strokeStyle = this.clr1;
+                ctx.lineWidth = 16;
+                //ctx.arc(this.x, this.y, this.rad, angle, angle + Math.PI);
+                ctx.arc(this.x, this.y, this.rad, angle, angle+(2*Math.PI/3));
+                ctx.stroke();
 
-            ctx.beginPath();
-            ctx.strokeStyle = this.clr2;
-            // ctx.arc(this.x, this.y, this.rad, Math.PI+angle, (2*Math.PI) +angle);
-            ctx.arc(this.x, this.y, this.rad, angle+(2*Math.PI/3), (4*Math.PI/3) +angle);
-            ctx.stroke();
+                ctx.beginPath();
+                ctx.strokeStyle = this.clr2;
+                // ctx.arc(this.x, this.y, this.rad, Math.PI+angle, (2*Math.PI) +angle);
+                ctx.arc(this.x, this.y, this.rad, angle+(2*Math.PI/3), (4*Math.PI/3) +angle);
+                ctx.stroke();
 
-            ctx.beginPath();
-            ctx.strokeStyle = this.clr3;
-            // ctx.arc(this.x, this.y, this.rad, Math.PI+angle, (2*Math.PI) +angle);
-            ctx.arc(this.x, this.y, this.rad, angle+(4*Math.PI/3), (2*Math.PI) +angle);
-            ctx.stroke();
+                ctx.beginPath();
+                ctx.strokeStyle = this.clr3;
+                // ctx.arc(this.x, this.y, this.rad, Math.PI+angle, (2*Math.PI) +angle);
+                ctx.arc(this.x, this.y, this.rad, angle+(4*Math.PI/3), (2*Math.PI) +angle);
+                ctx.stroke();
+            }
+
+            else if(hard==false){
+
+                ctx.beginPath();
+                ctx.strokeStyle = this.clr1;
+                ctx.lineWidth = 16;
+                ctx.arc(this.x, this.y, this.rad, angle, angle + Math.PI);
+                //ctx.arc(this.x, this.y, this.rad, angle, angle+(2*Math.PI/3));
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.strokeStyle = this.clr2;
+                ctx.arc(this.x, this.y, this.rad, Math.PI+angle, (2*Math.PI) +angle);
+                //ctx.arc(this.x, this.y, this.rad, angle+(2*Math.PI/3), (4*Math.PI/3) +angle);
+                ctx.stroke();
+            }
+
+            
         
         }
 
         obsUpdate(){                                 //Updates the position variable of an Obstacle 
             
-            this.a += 2;  
-            this.y+=1.25;
+            if(hard==true){
+                this.a += 2;  
+                this.y+=1.5;
+            }
+            else if(hard==false){
+                this.a+=1.5;
+                this.y+=1.5;
+            }
+            
             console.log(this.a);
         
         }
@@ -169,61 +237,75 @@ function init(){                                     //All gameplay code is insi
     function colorCheck(){                           //Checks for collision 
             
         for(var j=0;j<o.length;j++){
-            if (((ball.y - o[j].y)<75) && (ball.y - o[j].y)>50){
-                // if (o[j].a%360>90 && o[j].a%360<270){
-                //     if (ball.clr == o[j].clr1){
-                //         flag = true;
-                //     }
-                // }                            
-                                                                
-                // else{
-                //     if(ball.clr == o[j].clr2){
-                //         flag = true;
-                //     }
-                // }                   //If there's a collision of differenr colors, game over
-                if(o[j].a%360>90 && o[j].a%360<210){
-                    if(ball.clr != o[j].clr3){
-                        flag = true;
+            if(hard==true){
+                if (((ball.y - o[j].y)<75) && (ball.y - o[j].y)>50){
+                    
+                    if(o[j].a%360>90 && o[j].a%360<210){
+                        if(ball.clr != o[j].clr3){
+                            flag = true;
+                        }
+                    }
+                    else if(o[j].a%360>210 && o[j].a%360<330){
+                        if(ball.clr != o[j].clr2){
+                            flag = true;
+                        }
+                    }
+                    else{
+                        if(ball.clr != o[j].clr1){
+                            flag = true;
+                        }
+                    }
+                }                       //2 if statements to check for bottom and top part of obstacle
+                                                
+                if ((ball.y - o[j].y)>(-75) && (ball.y - o[j].y)<(-50)){
+                    
+                    if(o[j].a%360>30 && o[j].a%360<150){
+                        if(ball.clr != o[j].clr2){
+                            flag = true;
+                        }
+                    }
+                    else if(o[j].a%360>150 && o[j].a%360<270){
+                        if(ball.clr != o[j].clr1){
+                            flag = true;
+                        }
+                    }
+                    else{
+                        if(ball.clr != o[j].clr3){
+                            flag = true;
+                        }
                     }
                 }
-                else if(o[j].a%360>210 && o[j].a%360<330){
-                    if(ball.clr != o[j].clr2){
-                        flag = true;
+            }
+
+            if(hard==false){
+                
+                if (((ball.y - o[j].y)<75) && (ball.y - o[j].y)>50){
+                    if (o[j].a%360>90 && o[j].a%360<270){
+                        if (ball.clr == o[j].clr1){
+                            flag = true;
+                        }
+                    }                            
+                                                                        
+                    else{
+                        if(ball.clr == o[j].clr2){
+                            flag = true;
+                        }
+                    } 
+                }
+
+                if ((ball.y - o[j].y)>(-75) && (ball.y - o[j].y)<(-50)){
+                    if (o[j].a%360>90 && o[j].a%360<270){
+                        if (ball.clr == o[j].clr2){
+                            flag = true;
+                        }
+                    }
+                    else{
+                        if(ball.clr == o[j].clr1){
+                            flag = true;
+                        }
                     }
                 }
-                else{
-                    if(ball.clr != o[j].clr1){
-                        flag = true;
-                    }
-                }
-            }                       //2 if statements to check for bottom and top part of obstacle
-                                            
-            if ((ball.y - o[j].y)>(-75) && (ball.y - o[j].y)<(-50)){
-                // if (o[j].a%360>90 && o[j].a%360<270){
-                //     if (ball.clr == o[j].clr2){
-                //         flag = true;
-                //     }
-                // }
-                // else{
-                //     if(ball.clr == o[j].clr1){
-                //         flag = true;
-                //     }
-                // }
-                if(o[j].a%360>30 && o[j].a%360<150){
-                    if(ball.clr != o[j].clr2){
-                        flag = true;
-                    }
-                }
-                else if(o[j].a%360>150 && o[j].a%360<270){
-                    if(ball.clr != o[j].clr1){
-                        flag = true;
-                    }
-                }
-                else{
-                    if(ball.clr != o[j].clr3){
-                        flag = true;
-                    }
-                }
+
             }
         }
 
