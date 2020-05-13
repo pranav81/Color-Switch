@@ -2,8 +2,10 @@ var canvas = document.querySelector('.canvas1');     //Selecting DOM elements
 var easy = document.querySelector('.easy');
 var hard = document.querySelector('.hard');
 
-var scores=[];                                       //Global variables
-var best = 0;
+var easyscores=[];
+var hardscores=[]                                       //Global variables
+var easybest = 0;
+var hardbest = 0;
 var difficulty = [true,false];
 var hard;
 
@@ -28,7 +30,7 @@ easy.addEventListener('click', function(){          //Starting the game on click
     
 });
 
-hard.addEventListener('click', function(e){          //Starting the game on clicking START button
+hard.addEventListener('click', function(){          //Starting the game on clicking START button
     
     setTimeout(function(){
         hard=true;
@@ -100,6 +102,7 @@ function init(){                                     //All gameplay code is insi
                 }
             }
         }
+
         else{
             if(hard==true){
                 ball.vel = -7.5;
@@ -112,6 +115,7 @@ function init(){                                     //All gameplay code is insi
                 beep.play();
             }
         }
+
     }
 
 
@@ -123,23 +127,27 @@ function init(){                                     //All gameplay code is insi
             this.x = x;                              //Initialising obstacle properties
             this.y = y;
             this.rad = 60;
-            if(hard == true){
+            if(hard == true){                        //Setting colors based on difficulty
+                
                 this.clr1 = colors[Math.floor(Math.random() * 3)];
             
                 if(this.clr1=='red'){
-                    //this.clr2='green';
+    
                     this.clr2='green';
                     this.clr3='blue';
+
                 }
                 else if(this.clr1=='green'){
-                    //this.clr2='red';
+                    
                     this.clr2='blue';
                     this.clr3='red';
 
                 }
                 else if(this.clr1=='blue'){
+                    
                     this.clr2='red';
                     this.clr3='green';
+
                 }
             }
 
@@ -153,31 +161,29 @@ function init(){                                     //All gameplay code is insi
                     this.clr2='red';
                 }
             }
-            console.log(this.clr1);
-            console.log(this.clr2);
+            
         }
 
         drawObs(angle = 0){                          //Draws an obstacle onto the screen
             
             if(hard  == true){
+
                 ctx.beginPath();
                 ctx.strokeStyle = this.clr1;
                 ctx.lineWidth = 16;
-                //ctx.arc(this.x, this.y, this.rad, angle, angle + Math.PI);
                 ctx.arc(this.x, this.y, this.rad, angle, angle+(2*Math.PI/3));
                 ctx.stroke();
 
                 ctx.beginPath();
                 ctx.strokeStyle = this.clr2;
-                // ctx.arc(this.x, this.y, this.rad, Math.PI+angle, (2*Math.PI) +angle);
                 ctx.arc(this.x, this.y, this.rad, angle+(2*Math.PI/3), (4*Math.PI/3) +angle);
                 ctx.stroke();
 
                 ctx.beginPath();
                 ctx.strokeStyle = this.clr3;
-                // ctx.arc(this.x, this.y, this.rad, Math.PI+angle, (2*Math.PI) +angle);
                 ctx.arc(this.x, this.y, this.rad, angle+(4*Math.PI/3), (2*Math.PI) +angle);
                 ctx.stroke();
+
             }
 
             else if(hard==false){
@@ -186,17 +192,14 @@ function init(){                                     //All gameplay code is insi
                 ctx.strokeStyle = this.clr1;
                 ctx.lineWidth = 16;
                 ctx.arc(this.x, this.y, this.rad, angle, angle + Math.PI);
-                //ctx.arc(this.x, this.y, this.rad, angle, angle+(2*Math.PI/3));
                 ctx.stroke();
 
                 ctx.beginPath();
                 ctx.strokeStyle = this.clr2;
                 ctx.arc(this.x, this.y, this.rad, Math.PI+angle, (2*Math.PI) +angle);
-                //ctx.arc(this.x, this.y, this.rad, angle+(2*Math.PI/3), (4*Math.PI/3) +angle);
                 ctx.stroke();
-            }
 
-            
+            }         
         
         }
 
@@ -210,10 +213,9 @@ function init(){                                     //All gameplay code is insi
                 this.a+=1.5;
                 this.y+=1.5;
             }
-            
-            console.log(this.a);
-        
+                    
         }
+
     }
 
     var o = new Array();                             //Array of Obstacles
@@ -234,11 +236,11 @@ function init(){                                     //All gameplay code is insi
         
     }
 
-    function colorCheck(){                           //Checks for collision 
+    function colorCheck(){                           //Checks for collision and color 
             
         for(var j=0;j<o.length;j++){
             if(hard==true){
-                if (((ball.y - o[j].y)<78) && (ball.y - o[j].y)>42){
+                if (((ball.y - o[j].y)<78) && (ball.y - o[j].y)>45){
                     
                     if(o[j].a%360>90 && o[j].a%360<210){
                         if(ball.clr != o[j].clr3){
@@ -257,7 +259,7 @@ function init(){                                     //All gameplay code is insi
                     }
                 }                       //2 if statements to check for bottom and top part of obstacle
                                                 
-                if ((ball.y - o[j].y)>(-78) && (ball.y - o[j].y)<(-42)){
+                if ((ball.y - o[j].y)>(-75) && (ball.y - o[j].y)<(-42)){
                     
                     if(o[j].a%360>30 && o[j].a%360<150){
                         if(ball.clr != o[j].clr2){
@@ -279,7 +281,7 @@ function init(){                                     //All gameplay code is insi
 
             if(hard==false){
                 
-                if (((ball.y - o[j].y)<78) && (ball.y - o[j].y)>42){
+                if (((ball.y - o[j].y)<78) && (ball.y - o[j].y)>45){
                     if (o[j].a%360>90 && o[j].a%360<270){
                         if (ball.clr == o[j].clr1){
                             flag = true;
@@ -293,7 +295,7 @@ function init(){                                     //All gameplay code is insi
                     } 
                 }
 
-                if ((ball.y - o[j].y)>(-78) && (ball.y - o[j].y)<(-42)){
+                if ((ball.y - o[j].y)>(-75) && (ball.y - o[j].y)<(-42)){
                     if (o[j].a%360>90 && o[j].a%360<270){
                         if (ball.clr == o[j].clr2){
                             flag = true;
@@ -312,15 +314,28 @@ function init(){                                     //All gameplay code is insi
         if(ball.y>500 || ball.y<0){                  //If ball goes out of the canvas, game over
             flag=true;
         }
+        
+        if(hard==true){
+            if ((flag == true) || (score>hardbest)){         //If game over, push the score to scores[]
+            
+                hardscores.push(score);                         
+                hardbest = Math.max(...hardscores);              //Update best if applicable
+                if(hardbest>window.localStorage.getItem('hard-color-switch')){
+                window.localStorage.setItem('hard-color-switch', JSON.stringify(hardbest));
+                }
 
-        if ((flag == true) || (score>best)){         //If game over, push the score to scores[]
-           
-            scores.push(score);                         
-            best = Math.max(...scores);              //Update best if applicable
-            if(best>window.localStorage.getItem('color-switch')){
-            window.localStorage.setItem('color-switch', JSON.stringify(best));
             }
-
+        }
+        else if(hard==false){
+            if ((flag == true) || (score>easybest)){         //If game over, push the score to scores[]
+           
+                easyscores.push(score);                         
+                easybest = Math.max(...easyscores);              //Update best if applicable
+                if(easybest>window.localStorage.getItem('easy-color-switch')){
+                window.localStorage.setItem('easy-color-switch', JSON.stringify(easybest));
+                }
+    
+            }
         }
 
     }
@@ -361,14 +376,25 @@ function init(){                                     //All gameplay code is insi
         ctx.strokeText(score,5,50);
 
         ctx.strokeText('BEST', 5, 75);
-        if (window.localStorage.getItem('color-switch') == null){
-            ctx.strokeText('0', 5, 100);
-        }
-        else{
-            ctx.strokeText(window.localStorage.getItem('color-switch'), 5, 100);
-        }
         
-        if(flag==true){
+        if(hard==true){                              //Updating best based on difficulty level
+            if (window.localStorage.getItem('hard-color-switch') == null){
+                ctx.strokeText('0', 5, 100);
+            }
+            else{
+                ctx.strokeText(window.localStorage.getItem('hard-color-switch'), 5, 100);
+            }
+        }
+        else if(hard==false){
+            if (window.localStorage.getItem('easy-color-switch') == null){
+                ctx.strokeText('0', 5, 100);
+            }
+            else{
+                ctx.strokeText(window.localStorage.getItem('easy-color-switch'), 5, 100);
+            }
+        }
+
+        if(flag==true){                              //Indicates GAME OVER
             
             ctx.fillStyle = '#00316e';            
             ctx.textAlign = 'center';
@@ -381,6 +407,7 @@ function init(){                                     //All gameplay code is insi
             gameover.play();
             
         }
+
     }
 
     function update(){                               //Updates everything on the canvas
@@ -412,10 +439,10 @@ function init(){                                     //All gameplay code is insi
         drawText();
         colorCheck();
         drawPause();
-        console.log(flag);
 
         canvas.addEventListener('mousedown', ballJump);
 
         
     }
+
 }
