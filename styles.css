@@ -22,3 +22,8 @@ canvas{
     margin-left: 10px;
     margin-right: 10px;
 }
+
+.instructions, h1{
+    color: skyblue;
+    font-family: sans-serif;
+}

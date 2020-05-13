@@ -238,7 +238,7 @@ function init(){                                     //All gameplay code is insi
             
         for(var j=0;j<o.length;j++){
             if(hard==true){
-                if (((ball.y - o[j].y)<75) && (ball.y - o[j].y)>50){
+                if (((ball.y - o[j].y)<78) && (ball.y - o[j].y)>42){
                     
                     if(o[j].a%360>90 && o[j].a%360<210){
                         if(ball.clr != o[j].clr3){
@@ -257,7 +257,7 @@ function init(){                                     //All gameplay code is insi
                     }
                 }                       //2 if statements to check for bottom and top part of obstacle
                                                 
-                if ((ball.y - o[j].y)>(-75) && (ball.y - o[j].y)<(-50)){
+                if ((ball.y - o[j].y)>(-78) && (ball.y - o[j].y)<(-42)){
                     
                     if(o[j].a%360>30 && o[j].a%360<150){
                         if(ball.clr != o[j].clr2){
@@ -279,7 +279,7 @@ function init(){                                     //All gameplay code is insi
 
             if(hard==false){
                 
-                if (((ball.y - o[j].y)<75) && (ball.y - o[j].y)>50){
+                if (((ball.y - o[j].y)<78) && (ball.y - o[j].y)>42){
                     if (o[j].a%360>90 && o[j].a%360<270){
                         if (ball.clr == o[j].clr1){
                             flag = true;
@@ -293,7 +293,7 @@ function init(){                                     //All gameplay code is insi
                     } 
                 }
 
-                if ((ball.y - o[j].y)>(-75) && (ball.y - o[j].y)<(-50)){
+                if ((ball.y - o[j].y)>(-78) && (ball.y - o[j].y)<(-42)){
                     if (o[j].a%360>90 && o[j].a%360<270){
                         if (ball.clr == o[j].clr2){
                             flag = true;
