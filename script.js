@@ -3,7 +3,7 @@ var easy = document.querySelector('.easy');
 var hard = document.querySelector('.hard');
 
 var easyscores=[];
-var hardscores=[]                                       //Global variables
+var hardscores=[];                                       //Global variables
 var easybest = 0;
 var hardbest = 0;
 var difficulty = [true,false];
@@ -281,7 +281,7 @@ function init(){                                     //All gameplay code is insi
 
             if(hard==false){
                 
-                if (((ball.y - o[j].y)<78) && (ball.y - o[j].y)>45){
+                if (((ball.y - o[j].y)<78) && (ball.y - o[j].y)>48){
                     if (o[j].a%360>90 && o[j].a%360<270){
                         if (ball.clr == o[j].clr1){
                             flag = true;
@@ -295,7 +295,7 @@ function init(){                                     //All gameplay code is insi
                     } 
                 }
 
-                if ((ball.y - o[j].y)>(-75) && (ball.y - o[j].y)<(-42)){
+                if ((ball.y - o[j].y)>(-72) && (ball.y - o[j].y)<(-42)){
                     if (o[j].a%360>90 && o[j].a%360<270){
                         if (ball.clr == o[j].clr2){
                             flag = true;
@@ -311,7 +311,7 @@ function init(){                                     //All gameplay code is insi
             }
         }
 
-        if(ball.y>500 || ball.y<0){                  //If ball goes out of the canvas, game over
+        if(ball.y>510 || ball.y<-10){                  //If ball goes out of the canvas, game over
             flag=true;
         }
         
@@ -440,7 +440,7 @@ function init(){                                     //All gameplay code is insi
         colorCheck();
         drawPause();
 
-        canvas.addEventListener('touchstart', ballJump);
+
         canvas.addEventListener('mousedown', ballJump);
 
         
