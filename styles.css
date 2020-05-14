@@ -1,6 +1,7 @@
 body{
     background: #007eaf;
     text-align: center;
+    user-select: none;
 }
 div{
     text-align: center;
