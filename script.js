@@ -127,6 +127,8 @@ function init(){                                     //All gameplay code is insi
             this.x = x;                              //Initialising obstacle properties
             this.y = y;
             this.rad = 60;
+            this.colorChange = false;
+            this.colorVariable = Math.random();
             if(hard == true){                        //Setting colors based on difficulty
                 
                 this.clr1 = colors[Math.floor(Math.random() * 3)];
@@ -183,7 +185,22 @@ function init(){                                     //All gameplay code is insi
                 ctx.strokeStyle = this.clr3;
                 ctx.arc(this.x, this.y, this.rad, angle+(4*Math.PI/3), (2*Math.PI) +angle);
                 ctx.stroke();
-
+                if(this.colorVariable<0.3){
+                    if(this.colorChange==false){
+                        ctx.beginPath();
+                        ctx.fillStyle = this.clr1;
+                        ctx.arc(this.x, this.y-150, 10, angle, angle+(2*Math.PI/3));
+                        ctx.fill();
+                        ctx.beginPath();
+                        ctx.fillStyle = this.clr2;
+                        ctx.arc(this.x, this.y-150, 10, angle+(2*Math.PI/3), (4*Math.PI/3) +angle);
+                        ctx.fill();
+                        ctx.beginPath();
+                        ctx.fillStyle = this.clr3;
+                        ctx.arc(this.x, this.y-150, 10, angle+(4*Math.PI/3), (2*Math.PI) +angle);
+                        ctx.fill();
+                    }
+                }
             }
 
             else if(hard==false){
@@ -198,7 +215,19 @@ function init(){                                     //All gameplay code is insi
                 ctx.strokeStyle = this.clr2;
                 ctx.arc(this.x, this.y, this.rad, Math.PI+angle, (2*Math.PI) +angle);
                 ctx.stroke();
-
+                if(this.colorVariable<0.3){
+                    if(this.colorChange==false){
+                        ctx.beginPath();
+                        ctx.fillStyle = this.clr1;
+                        ctx.arc(this.x, this.y-150, 10, angle, angle+(Math.PI));
+                        ctx.fill();
+                        ctx.beginPath();
+                        ctx.fillStyle = this.clr2;
+                        ctx.arc(this.x, this.y-150, 10, angle+(Math.PI), (2*Math.PI) +angle);
+                        ctx.fill();
+                        
+                    }
+                }
             }         
         
         }
@@ -277,6 +306,14 @@ function init(){                                     //All gameplay code is insi
                         }
                     }
                 }
+                if(o[j].colorVariable<0.3){
+                    if(o[j].colorChange==false){
+                        if(ball.y<=o[j].y-130){
+                            ball.clr = colors[Math.floor(Math.random() * 3)];;
+                            o[j].colorChange=true;
+                        }
+                    }
+                }
             }
 
             if(hard==false){
@@ -307,7 +344,14 @@ function init(){                                     //All gameplay code is insi
                         }
                     }
                 }
-
+                if(o[j].colorVariable<0.3){
+                    if(o[j].colorChange==false){
+                        if(ball.y<=o[j].y-130){
+                            ball.clr = colors[Math.floor(Math.random() * 2)];
+                            o[j].colorChange=true;
+                        }
+                    }
+                }
             }
         }
 
